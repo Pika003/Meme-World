@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomBtn from "../components/CustomBtn";
 import { useData } from "../context/Context";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,8 @@ import { app } from "../firebase/Firebase";
 
 function Profile() {
   const { memes, name, email, isLogin } = useData();
-
   const navigate = useNavigate();
+  const [ownMeme, setOwnMeme] = useState(false);
 
   useEffect(() => {
     if (!isLogin) navigate("/");
@@ -55,11 +55,15 @@ function Profile() {
                     @{data.UserName} <span>❤️</span>
                   </p>
                   <p className="text-black py-2 ">{data.Title}</p>
+                  {(!ownMeme) && setOwnMeme(true)}
                 </div>
               )
           )
         ) : (
-          <p>Loading...</p>
+          <p className="text-center">--- You don't have any meme, Create one ---</p>
+        )}
+        {!ownMeme && (
+          <p className="text-center mt-[20vh] lg:mt-[20vh]">--- You don't have any meme, Create one ---</p>
         )}
       </div>
     </div>

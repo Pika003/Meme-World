@@ -18,12 +18,16 @@ const Home = () => {
   const firestore = getFirestore(app);
   const navigate = useNavigate();
   const auth = getAuth(app);
-  const { memes, name, email, isLogin, setMemes } = useData();
+  const { memes, name, email, isLogin, setMemes, setName } = useData();
 
   useEffect(() => {
     if (!isLogin) {
       navigate("/");
     } else {
+      if(!name){
+        setName(email.match(/^([^@]*)@/)[1])
+      }
+
       const fetchMemes = async () => {
         const Collectionref = collection(firestore, "meme");
         const q = query(Collectionref, where("isImage", "==", true));
