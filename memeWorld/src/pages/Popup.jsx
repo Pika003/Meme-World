@@ -1,21 +1,30 @@
 import React, { useState } from "react";
+import { v4 } from "uuid";
 import CustomInput from "../components/CustomInput";
 import CustomBtn from "../components/CustomBtn";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { useData } from "../context/Context";
-import { app } from "../firebase/Firebase";
+import { app, imgDB } from "../firebase/Firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function Popup({ onClose }) {
-  const { memes, isLogin, setMemes } = useData();
+  const { setMemes } = useData();
   const [title, setTitle] = useState("");
   const [imgurl, setImgurl] = useState("");
   const { name } = useData();
 
   const firestore = getFirestore(app);
 
+  const handleUpload = (e) => {
+    const imgs = ref(imgDB, `Imgs/${v4()}`);
+    uploadBytes(imgs, e.target.files[0]).then((data) => {
+      getDownloadURL(data.ref).then((val) => setImgurl(val));
+    });
+  };
+
   const addMeme = async () => {
-    if (title == "" || imgurl == "") {
-      alert("All filds are required !");
+    if (title === "" || imgurl === "") {
+      alert("All fields are required!");
     } else {
       await addDoc(collection(firestore, "meme"), {
         Imgurl: imgurl,
@@ -45,10 +54,10 @@ function Popup({ onClose }) {
 
         <div className="flex items-center justify-center flex-col gap-5">
           <CustomInput Value={title} setValue={setTitle} title="Title" />
-          <CustomInput
-            Value={imgurl}
-            setValue={setImgurl}
-            title="Meme Imgurl"
+          <input
+            onChange={handleUpload}
+            type="file"
+            className="w-[80%] outline-none border-0 bg-[#B0AB99] text-gray-900 p-2 rounded-sm placeholder-slate-700"
           />
           <CustomBtn
             handleSubmit={addMeme}

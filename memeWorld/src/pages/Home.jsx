@@ -4,6 +4,10 @@ import CustomBtn from "../components/CustomBtn";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../firebase/Firebase";
 import { useNavigate } from "react-router-dom";
+
+import { CgAdd,CgProfile } from "react-icons/cg";
+import { MdOutlineLogout } from "react-icons/md";
+
 import {
   getFirestore,
   collection,
@@ -59,26 +63,34 @@ const Home = () => {
 
   return (
     <div className="flex min-h-[100vh] items-center pt-16 bg-yellow-300 w-[100vw] h-full flex-col gap-10">
+      <MdOutlineLogout className="absolute z-10 right-5 top-6 lg:right-12 lg:top-[3.3rem]"/>
       <CustomBtn
         title="Logout"
         addstyle="absolute bg-red-300 text-red-900 right-3 top-3 lg:right-10 lg:top-10"
         handleSubmit={handleLogout}
       />
+    
+      <CgProfile className="absolute z-10 left-5 top-6 lg:left-12 lg:top-[3.3rem]"/>
       <CustomBtn
         title={name}
         addstyle="absolute bg-green-300  text-green-900 left-3 top-3 lg:left-10 lg:top-10"
         handleSubmit={GOprofile}
       />
+      
       <h1 className="text-center text-3xl font-semibold">
         Welcome to Meme World{" "}
         <span className=" font-mono text-[#2F4858] text-4xl ml-2">{name}</span>
       </h1>
 
-      <CustomBtn
-        title="Add Meme"
-        handleSubmit={addMeme}
-        addstyle="bg-green-300 text-green-900"
-      />
+      <div className="flex items-center">
+        <CgAdd color="green" className="absolute ml-3"/>
+        <CustomBtn
+          title="Add Meme"
+          handleSubmit={addMeme}
+          addstyle="bg-green-300 text-green-800 pr-5"
+        >
+        </CustomBtn>
+      </div>
 
       <div className="flex justify-center gap-10 flex-wrap">
         {memes.length > 0 ? (
