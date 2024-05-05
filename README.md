@@ -3,7 +3,7 @@
 
 ## Description
 
-It is a fullstack web-app using rect and firebase.
+It is a meme sharing  fullstack web-app using rect and firebase.
 
 ## Installation
 
